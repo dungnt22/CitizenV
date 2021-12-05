@@ -1,41 +1,45 @@
 var mongoose = require('mongoose')
 var schema = mongoose.Schema
-require('./B2')
+require('./account')
 
 var citizenSchema = new schema({
-    firstname: {
+    IDNumber: {
+        type: Number
+    },
+    fullName: {
         type: String,
-        default: '',
         required: true
     },
-    lastname: {
-        type: String,
-        default: '',
-        required: true
-    },
-    ID: {
-        type: Number,
-        default: '',
-        required: true
+    dateOfBirth: {
+        type: Date
     },
     sex: {
         type: Number,
         required: true
     },
-    dateOfBirth: {
-        type: Date,
-        required: true
+    homeTown: {
+        type: String
     },
-    address: {
+    permanentAddress: {
+        type: String
+    },
+    temporaryAddress: {
+        type: String
+    },
+    religion: {
         type: String,
-        required: true
+        default: ''
     },
-    telNum: {
-        type: Number
+    educationLevel: {
+        type: String
+    },
+    job: {
+        type: String,
+        default: ''
     },
     manager: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'B2'
+        ref: 'Account'
     }
 },{
     timestamps: true

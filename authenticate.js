@@ -1,14 +1,15 @@
 var passport = require('passport');
+var LocalStratery = require('passport-local').Strategy;
 var JwtStratery = require('passport-jwt').Strategy;
 var ExtractJwt = require('passport-jwt').ExtractJwt;
 var jwt = require('jsonwebtoken'); // use to create, sign and verify tokens
 
-var A1 = require('./models/A1');
-var A2 = require('./models/A2');
-var A3 = require('./models/A3');
-var B1 = require('./models/B1');
-var B2 = require('./models/B2');
+var Account = require('./models/account');
 var config = require('./config');
+
+passport.use(new LocalStratery(Account.authenticate()));
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
 
 // user could be an object literal, buffer or string representing valid JSON
 // yeu cau dang nhap lai sau 1 tieng
@@ -23,42 +24,15 @@ opts.secretOrKey = config.secretKey;
 
 exports.jwtPassport = passport.use(new JwtStratery(opts, (jwt_payload, done) => {
     console.log('JWT payload: ', jwt_payload);
-    A1.findOne({_id: jwt_payload._id}, (err, user) => {
+    Account.findOne({_id: jwt_payload._id}, (err, user) => {
         if (err) {
-            return done(err, null);
+            return done(err, false);
         } else if (user) {
             return done(null, user);
-        }
-    });
-    A2.findOne({_id: jwt_payload._id}, (err, user) => {
-        if (err) {
-            return done(err, null);
-        } else if (user) {
-            return done(null, user);
-        }
-    });
-    A3.findOne({_id: jwt_payload._id}, (err, user) => {
-        if (err) {
-            return done(err, null);
-        } else if (user) {
-            return done(null, user);
-        }
-    });
-    B1.findOne({_id: jwt_payload._id}, (err, user) => {
-        if (err) {
-            return done(err,null);
-        } else if (user) {
-            return done(null, user);
-        }
-    });
-    B2.findOne({_id: jwt_payload._id}, (err, user) => {
-        if (err) {
-            return done(err, null);
-        } else if (user) {
-            return done(null, user);
+        } else {
+            return done(null, false);
         }
     })
-    return done(null, false);
 }));
 
 exports.verifyUser = passport.authenticate('jwt', {session: false});
