@@ -37,3 +37,12 @@ exports.jwtPassport = passport.use(new JwtStratery(opts, (jwt_payload, done) => 
 
 exports.verifyUser = passport.authenticate('jwt', {session: false});
 
+exports.verifyCreateUser = function(req, res, next) {
+    if (req.user.level < 5) {
+        next()
+    } else {
+        var err = new Error('You can not create a new Account');
+        err.status = 401;
+        next(err);
+    }
+}
