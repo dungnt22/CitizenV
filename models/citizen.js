@@ -14,7 +14,7 @@ var citizenSchema = new schema({
         type: Date
     },
     sex: {
-        type: Number,
+        type: String, // M: male, F: female
         required: true
     },
     homeTown: {
