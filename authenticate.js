@@ -36,12 +36,42 @@ exports.jwtPassport = passport.use(new JwtStratery(opts, (jwt_payload, done) => 
 }));
 
 exports.verifyUser = passport.authenticate('jwt', {session: false});
-
+ 
 exports.verifyCreateUser = function(req, res, next) {
     if (req.user.level < 5) {
         next()
     } else {
-        var err = new Error('You can not create a new Account');
+        var err = new Error('Bạn không có quyền tạo tài khoản mới!');
+        err.status = 401;
+        next(err);
+    }
+}
+
+exports.verifyAdmin = function(req, res, next) {
+    if (req.user.level === 1) {
+        next()
+    } else {
+        var err = new Error('Bạn không có quyền xóa khảo sát này!');
+        err.status = 401;
+        next(err);
+    }
+}
+
+exports.verifyUpload = function(req, res, next) {
+    if (req.user.modify && (req.user.level == 4 || req.user.level == 5)) {
+        next()
+    } else {
+        var err = new Error('Không thể upload file!' + '\n' + 'Khảo sát đã kết thúc hoặc Bạn không có quyền tham gia khảo sát này!');
+        err.status = 401;
+        next(err);
+    }
+}
+
+exports.verifyModify = function(req, res, next) {
+    if (req.user.modify) {
+        next();
+    } else {
+        var err = new Error('Bạn không có quyền tham gia khảo sát!');
         err.status = 401;
         next(err);
     }

@@ -14,7 +14,7 @@ var citizenSchema = new schema({
         type: Date
     },
     sex: {
-        type: Number,
+        type: String,
         required: true
     },
     homeTown: {
@@ -36,6 +36,9 @@ var citizenSchema = new schema({
     job: {
         type: String,
         default: ''
+    },
+    hamletCode: {
+        type: Number
     },
     manager: {
         type: mongoose.Schema.Types.ObjectId,
