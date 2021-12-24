@@ -10,7 +10,14 @@ var config = require('./config');
 var indexRouter = require('./routes/index');
 var accountRouter = require('./routes/account');
 var signupRouter = require('./routes/signup');
+<<<<<<< HEAD
 var analysisRouter = require('./routes/analysis');
+=======
+var surveyRouter = require('./routes/createSurvey');
+var uploadRouter = require('./routes/upload');
+var searchRouter = require('./routes/search');
+var declareRouter = require('./routes/declare');
+>>>>>>> a30d02da63133a4302dca9bbea3ed470c835841d
 
 const mongoose = require('mongoose');
 const url = config.mongoUrl;
@@ -23,6 +30,13 @@ connect.then((db) => {
 })
 
 var app = express();
+// app.all('*', (req, res, next) => {
+//   if (req.secure) {
+//     return next()
+//   } else {
+//     res.redirect(307, 'https://' + req.hostname + ':' + app.get('secPort') + req.url);
+//   }
+// })
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -40,7 +54,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', accountRouter);
 app.use('/signup', signupRouter);
+<<<<<<< HEAD
 app.use('/analysis', analysisRouter);
+=======
+app.use('/survey', surveyRouter);
+app.use('/upload', uploadRouter);
+app.use('/search', searchRouter);
+app.use('/declare', declareRouter);
+>>>>>>> a30d02da63133a4302dca9bbea3ed470c835841d
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

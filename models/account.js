@@ -15,7 +15,7 @@ var account = new schema({
         required: true
     },
     IDCode: {
-        type: String,
+        type: Number,
         unique: true,
         required: true
     },
@@ -30,6 +30,20 @@ var account = new schema({
     modify: {
         type: Boolean,
         default: false
+    },
+    manager: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Account'
+    },
+    finish: {
+        type: Boolean,
+        default: false
+    },
+    resetPasswordToken: {
+        type: String
+    },
+    resetPasswordExpires: {
+        type: Date
     }
 })
 
