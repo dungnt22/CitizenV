@@ -6,14 +6,7 @@ var crypto = require('crypto');
 
 var authenticate = require('../authenticate');
 var account = require('../models/account');
-<<<<<<< HEAD
-var provinces = require('../models/provinces');
-var districts = require('../models/districts');
-var communes = require('../models/communes');
-
-=======
 var cors = require('./cors');
->>>>>>> a30d02da63133a4302dca9bbea3ed470c835841d
 
 var router = express.Router();
 
@@ -25,25 +18,6 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
-<<<<<<< HEAD
-router.post('/signup', (req, res, next) => {
-  account.register(new account({username: req.body.username, level: req.body.level, name: req.body.name, IDCode: req.body.username}), req.body.password, (err, acc) => {
-    if (err) {
-      res.statusCode = 500;
-      res.setHeader('Content-Type', 'application/json');
-      res.json({error: err});
-    }
-
-    passport.authenticate('local')(req, res, () => {
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'application/json');
-      res.json({success: true, status: 'Registration Successful!'})
-    })
-  })
-});
-
-=======
->>>>>>> a30d02da63133a4302dca9bbea3ed470c835841d
 /**
  * login
  * by default
@@ -91,65 +65,6 @@ router.put('/updateAccount', cors.corsWithOptions, authenticate.verifyUser, (req
   .catch((err) => next(err))
 });
 
-<<<<<<< HEAD
-/* Create account */
-
-
-//TEST
-router.get('/findAll', (req, res) => {
-  account.find()
-    .then((data) => {
-      res.json(data);
-    })
-    .catch((err) => {
-      res.json(err);
-    });
-}); 
-
-router.get('/:id', (req, res) => {
-  account.findOne({_id: req.params.id})
-    .then((data) => {
-      res.json(data);
-    })
-    .catch((err) => {
-      res.json(err);
-    })
-});
-
-
-/* Delete account */
-router.delete(
-  '/delete/:id',
-  (req, res, next) => {
-      account.findOne({
-        username: req.body.username,
-        password: req.body.password
-      }).then(data => {
-        if(data) {
-          if ((data.level === 1) || 
-          (data.level === 2 && data.IDCode === provinces.account) ||
-          (data.level === 3 && data.IDCode === districts.account) ||
-          (data.level === 4 && data.IDCode === communes.account)) {
-            next();
-          } else {
-            res.json("Khong co quyen han");
-          }
-        } else {
-          res.json("Khong tim thay tai khoan!")
-        }
-      })
-  },
-  (req,res) => {
-    account.deleteOne({_id: req.params.id})
-      .then((data) => {
-        res.json(data);
-      })
-      .catch((err) => {
-        res.json(err);
-      })
-})
-
-=======
 /**
  * changePassword
  */
@@ -311,7 +226,6 @@ router.post('/reset/:token', cors.corsWithOptions, (req, res, next) => {
  * gồm updateAccount
  * updatePassword
  */
->>>>>>> a30d02da63133a4302dca9bbea3ed470c835841d
 
 module.exports = router;
 // https://github.com/hardillb/2FA-Demo/blob/f268e76c686c20706c904c722e7b545d078b9c62/index.js#L125
