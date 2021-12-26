@@ -32,8 +32,8 @@ createNew.route('/')
     .then((surveys) => {
         var sur = surveys[surveys.length - 1];
         if ((new Date().getTime() >= sur.dateStart.getTime()) && (new Date().getTime() <= sur.dateEnd.getTime())) {
-            account.find({manager: req.user._id})
-            .then((accounts) => {
+            // account.find({manager: req.user._id})
+            // .then((accounts) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
                 res.json({
@@ -41,11 +41,11 @@ createNew.route('/')
                     dateEnd: sur.dateEnd,
                     name: sur.name,
                     message: 'Đang diễn ra khảo sát!',
-                    accounts: accounts,
+                    // accounts: accounts,
                     surveys: surveys
                 })
-            }, (err) => next(err))
-            .catch((err) => next(err))
+            // }, (err) => next(err))
+            // .catch((err) => next(err))
         } else {
             account.findById({_id: req.user._id})
             .then((acc) => {
@@ -57,8 +57,8 @@ createNew.route('/')
                             if (err) {
                                 return next(err);
                             } else {
-                                account.find({manager: acc._id})
-                                .then((accounts) => {
+                                // account.find({manager: acc._id})
+                                // .then((accounts) => {
                                     res.statusCode = 200;
                                     res.setHeader('Content-Type', 'application/json');
                                     res.json({
@@ -66,10 +66,10 @@ createNew.route('/')
                                         dateEnd: undefined,
                                         name: undefined,
                                         message: 'Sẵn sàng tạo khảo sát mới!',
-                                        accounts: accounts,
+                                        // accounts: accounts,
                                         surveys: surveys
                                     });
-                                }, (err) => next(err))                            
+                                // }, (err) => next(err))                            
                             }
                         })                    
                     }, (err) => next(err))
@@ -288,7 +288,9 @@ createNew.route('/:surveyId')
  * xem danh sách cấp dưới mà nó quản lý có hoàn thành khảo sát hay chưa
  */
 .get(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
-    survey.findById(req.params.surveyId)
+    req.params.surveyId[0] = '';
+    var id = req.params.surveyId.replace(req.params.surveyId.charAt(0), '');
+    survey.findById(id)
     .populate('finish')
     .then((sur) => {
         if (sur) {
@@ -369,6 +371,8 @@ createNew.route('/finish')
                                 res.statusCode = 200;
                                 res.setHeader('Content-Type', 'application/json');
                                 res.json({
+                                    success: true,
+                                    user: acc,
                                     message: 'Bạn đã hoàn thành khảo sát!'
                                 });
                             }
@@ -382,6 +386,7 @@ createNew.route('/finish')
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
             res.json({
+                success: false,
                 message: 'Bạn chưa hoàn thành khảo sát!'
             })
         }

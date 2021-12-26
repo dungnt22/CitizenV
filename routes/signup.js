@@ -69,12 +69,13 @@ signupRouter.route('/')
                     }
                     passport.authenticate('local')(req, res, () => {
                         console.log("success");
+                        ins.account = acc._id;
+                        ins.save((err) => {
+                            if (err) return next(err);
+                        });
                         res.statusCode = 200;
                         res.setHeader('Content-Type', 'application/json');
-                        res.json({
-                            success: true, 
-                            status: 'Cấp tài khoản thành công!'
-                        })
+                        res.json(acc)
                     })
                 })
             } else {
@@ -85,7 +86,8 @@ signupRouter.route('/')
                 })
             }
         }
-    })
+    }, (err) => next(err))
+    .catch((err) => next(err))
 });
 
 module.exports = signupRouter;

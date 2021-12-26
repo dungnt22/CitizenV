@@ -15,7 +15,6 @@ declareRouter.route('/')
  */
 .get(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
     Instance.find({manager: req.user._id})
-    .populate('zipCode')
     .then((ins) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');

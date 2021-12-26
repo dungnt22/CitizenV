@@ -22,7 +22,7 @@ var instance = new schema({
     account: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'account',
-        default: ''
+
     },
     manager: {
         type: mongoose.Schema.Types.ObjectId,
